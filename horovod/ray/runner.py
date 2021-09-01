@@ -447,6 +447,7 @@ class _ExecutorDriver:
         extra_env_vars = extra_env_vars or {}
 
         self.strategy = self._create_strategy()
+        print("strategy created")
         self.coordinator = Coordinator(self.settings)
         executable_args = executable_args or []
         self.workers, node_workers = self.strategy.create_workers()

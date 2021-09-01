@@ -189,7 +189,7 @@ class PGStrategy(BaseStrategy):
                 world_rank=bundle_index, world_size=self.num_workers)
 
             self.workers.append(worker)
-
+        print(f"workers created {self.workers}")
         if self.use_gpu:
             node_ids = ray.get(
                 [worker.node_id.remote() for worker in self.workers])
@@ -197,6 +197,7 @@ class PGStrategy(BaseStrategy):
                 [worker.get_gpu_ids.remote() for worker in self.workers])
             node_workers = defaultdict(list)
             node_id_to_gpus = defaultdict(list)
+            print("gpus got")
             for worker, node_id, worker_gpu_ids in zip(self.workers, node_ids,
                                                        gpus):
                 node_workers[node_id].append(worker)
@@ -212,6 +213,7 @@ class PGStrategy(BaseStrategy):
                             "CUDA_VISIBLE_DEVICES":
                             all_ids
                         }))
+            print("obtaining futures")
             ray.get(futures)
         return self.workers, self.get_node_workers(self.workers)
 
